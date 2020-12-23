@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+/**
+ * Date: 2020/12/22
+ * @author George
+ * @package App\Models
+ * @mixin Eloquent
+ */
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail;
 
     /**
      * The attributes that are mass assignable.
