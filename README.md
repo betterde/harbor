@@ -21,6 +21,11 @@ Harbor is a web application framework with expressive, elegant syntax. We believ
 
 Harbor is accessible, powerful, and provides tools required for large, robust applications.
 
+## Release Log
+
+### v0.0.1 (2020-12-23)
+* release project management api
+
 ## Sponsors
 
 We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
