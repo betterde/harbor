@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * 云服务商数据模型
+ * Cloud computing service provider data model
  *
  * Date: 2020/12/22
  * @author George
