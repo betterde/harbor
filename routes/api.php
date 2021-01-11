@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\VariableController;
+use App\Http\Controllers\EnvironmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +21,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::resource('project', ProjectController::class);
+    Route::apiResource('project', ProjectController::class);
+    Route::apiResource('environment', EnvironmentController::class);
+    Route::apiResource('variable', VariableController::class);
 });

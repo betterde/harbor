@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CloudsTableSeeder::class);
         $this->call(ProjectsTableSeeder::class);
+        $this->call(VariablesTableSeeder::class);
+        $this->call(EnvironmentsTableSeeder::class);
     }
 }

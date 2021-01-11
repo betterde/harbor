@@ -25,4 +25,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Repository extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array $casts
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
+    ];
 }

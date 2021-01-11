@@ -2,37 +2,24 @@
 
 namespace App\Models;
 
-use Eloquent;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * Project data model
+ * 项目运行环境
  *
- * Date: 2020/12/22
+ * Date: 2021/1/10
  * @author George
  * @package App\Models
- * @mixin Eloquent
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $description
- * @property string $cover
- * @property string $repository
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property
  */
-class Project extends Model
+class Environment extends Model
 {
     use HasFactory;
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var string[]|bool
-     */
-    protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.
@@ -45,12 +32,14 @@ class Project extends Model
     ];
 
     /**
+     * 获取环境变量
+     *
      * Date: 2021/1/10
      * @return HasMany
      * @author George
      */
-    public function environments(): HasMany
+    public function variables(): HasMany
     {
-        return $this->hasMany(Environment::class, 'project_id', 'id');
+        return $this->hasMany(Variable::class, 'environment_id', 'id');
     }
 }
