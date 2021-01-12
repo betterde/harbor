@@ -14,8 +14,7 @@ class CreateVariablesTable extends Migration
     public function up()
     {
         Schema::create('variables', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('environment_id')->index();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('value')->nullable();
             $table->string('description')->nullable();

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEnvironmentsTable extends Migration
+class CreateMembersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateEnvironmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('environments', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->unsignedBigInteger('project_id')->index();
-            $table->string('name');
-            $table->string('description')->nullable();
+        Schema::create('members', function (Blueprint $table) {
+            $table->uuidMorphs('resource');
+            $table->uuid('user_id');
+            $table->string('role');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateEnvironmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('environments');
+        Schema::dropIfExists('members');
     }
 }

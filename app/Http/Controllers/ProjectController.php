@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use Exception;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * 项目逻辑控制器
+ *
+ * Date: 2021/1/12
+ * @author George
+ * @package App\Http\Controllers
+ */
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 获取项目列表
      *
      * @param Request $request
      * @return JsonResponse
