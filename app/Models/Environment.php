@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * 项目运行环境
@@ -14,8 +15,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @package App\Models
  * @property int $id
  * @property string $name
+ * @property string $project_id
  * @property string $description
- * @property
+ * @mixin Eloquent
  */
 class Environment extends Model
 {
@@ -35,11 +37,11 @@ class Environment extends Model
      * 获取环境变量
      *
      * Date: 2021/1/10
-     * @return HasMany
+     * @return BelongsToMany
      * @author George
      */
-    public function variables(): HasMany
+    public function variables(): BelongsToMany
     {
-        return $this->hasMany(Variable::class, 'environment_id', 'id');
+        return $this->belongsToMany(Variable::class, 'environment_variable_pivot', 'environment_id', 'variable_id');
     }
 }

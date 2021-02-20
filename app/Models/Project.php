@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUuid;
 use Eloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -25,7 +26,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
+
+    public $incrementing = false;
 
     /**
      * The attributes that aren't mass assignable.

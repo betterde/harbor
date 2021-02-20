@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Project;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,6 +58,8 @@ class ProjectController extends Controller
             'cover' => 'nullable|string',
             'repository' => 'nullable|string',
         ]);
+
+        $attributes['id'] = Str::uuid()->toString();
 
         $project = Project::create($attributes);
         return stored($project);

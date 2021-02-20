@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\Environment;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -42,5 +43,73 @@ class EnvironmentController extends Controller
         $result = $query->paginate($limit);
 
         return success($result);
+    }
+
+    /**
+     * 创建运行环境
+     *
+     * Date: 2021/2/20
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ValidationException
+     * @author Gorge
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $attributes = $this->validate($request, [
+            'project_id' => 'required|uuid',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $environment = Environment::create($attributes);
+        return stored($environment);
+    }
+
+    /**
+     * Date: 2021/1/27
+     * @param Environment $environment
+     * @return JsonResponse
+     * @author George
+     */
+    public function show(Environment $environment): JsonResponse
+    {
+        return success($environment);
+    }
+
+    /**
+     * Date: 2021/2/20
+     * @param Request $request
+     * @param Environment $environment
+     * @return JsonResponse
+     * @throws ValidationException
+     * @author George
+     */
+    public function update(Request $request, Environment $environment): JsonResponse
+    {
+        $attributes = $this->validate($request, [
+            'project_id' => 'required|uuid',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        $environment->update($attributes);
+        return success($environment);
+    }
+
+    /**
+     * Date: 2021/2/20
+     * @param Environment $environment
+     * @return JsonResponse
+     * @throws Exception
+     * @author George
+     */
+    public function destroy(Environment $environment): JsonResponse
+    {
+        if ($environment->delete()) {
+            return deleted();
+        }
+
+        return internalError();
     }
 }
