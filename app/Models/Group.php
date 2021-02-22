@@ -5,9 +5,13 @@ namespace App\Models;
 use Eloquent;
 use Carbon\Carbon;
 use App\Traits\HasUuid;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Str;
+use function PHPUnit\Framework\isNull;
 
 /**
  * 用户组数据模型
@@ -52,6 +56,37 @@ class Group extends Model
     ];
 
     /**
+     * 判断用户是否是组的所有则
+     *
+     * Date: 2021/2/22
+     * @param User|string $user
+     * @return bool
+     * @throws Exception
+     * @author George
+     */
+    public function isOwner(User|string $user): bool
+    {
+        $id = null;
+
+        if (Str::isUuid($user)) {
+            $id = $user;
+        }
+
+        if ($user instanceof User) {
+            $id = $user->getAuthIdentifier();
+        }
+
+        if (is_null($id)) {
+            throw new Exception('用户数据无效');
+        }
+
+        return $this->members()
+            ->where('user_id', $id)
+            ->where('role', Member::ROLE_OWNER)
+            ->exists();
+    }
+
+    /**
      * 获取组下面的用户
      *
      * Date: 2021/2/22
@@ -61,5 +96,17 @@ class Group extends Model
     public function members(): HasManyThrough
     {
         return $this->hasManyThrough(User::class, Member::class, 'resource_id', 'id', 'id', 'user_id');
+    }
+
+    /**
+     * 获取组下的项目
+     *
+     * Date: 2021/2/22
+     * @return HasMany
+     * @author George
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class, 'group_id', 'id');
     }
 }

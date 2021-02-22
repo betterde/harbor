@@ -26,6 +26,8 @@ class Member extends Model
 {
     use HasFactory, HasFactory;
 
+    const ROLE_OWNER = 'owner';
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *
