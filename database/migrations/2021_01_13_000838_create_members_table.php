@@ -18,6 +18,7 @@ class CreateMembersTable extends Migration
             $table->uuid('user_id');
             $table->string('role');
             $table->timestamps();
+            $table->primary(['resource_id', 'resource_type', 'user_id']);
         });
     }
 

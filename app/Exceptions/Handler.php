@@ -3,10 +3,17 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,6 +46,40 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param Request $request
+     * @param Throwable $exception
+     * @return JsonResponse|Response
+     *
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            return failed(Arr::first(Arr::collapse($exception->errors())), 422);
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return failed($exception->getMessage(), 405);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return notFound();
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return notFound();
+        }
+
+        if ($exception instanceof ThrottleRequestsException) {
+            return failed("Too Many Requests.", 429);
+        }
+
+        return parent::render($request, $exception);
     }
 
     /**

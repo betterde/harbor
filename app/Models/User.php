@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Carbon\Carbon;
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -74,4 +75,16 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * 获取用户所在组
+     *
+     * Date: 2021/2/22
+     * @return HasManyThrough
+     * @author George
+     */
+    public function groups(): HasManyThrough
+    {
+        return $this->hasManyThrough(Group::class, Member::class, 'user_id', 'id', 'id', 'resource_id');
+    }
 }
