@@ -5,6 +5,7 @@ use App\Http\Controllers\ServerController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\EnvironmentController;
+use App\Http\Controllers\Auth\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\EnvironmentController;
 */
 
 Route::prefix('auth')->group(function () {
-//    Route::post('signin', []);
+    Route::post('signin', [AuthenticationController::class, 'signin']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
