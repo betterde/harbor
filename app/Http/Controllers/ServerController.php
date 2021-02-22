@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use App\Models\Project;
+use App\Models\Server;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
 /**
- * 项目逻辑控制器
+ * 服务器管理逻辑控制器
  *
- * Date: 2021/1/12
+ * Date: 2021/2/22
  * @author George
  * @package App\Http\Controllers
  */
-class ProjectController extends Controller
+class ServerController extends Controller
 {
     /**
-     * 获取项目列表
+     * Display a listing of the resource.
      *
      * @param Request $request
      * @return JsonResponse
@@ -28,12 +28,14 @@ class ProjectController extends Controller
     public function index(Request $request): JsonResponse
     {
         $limit = $request->get('limit', config('app.query.limit'));
+        $search = $request->get('search');
+        $query = Server::query();
 
-        $query = Project::query();
-
-        if ($search = $request->get('search')) {
+        if ($search) {
             $query->where(function (Builder $builder) use ($search) {
-                $builder->where('name', 'like', "%$search%")
+                $builder->where('id', 'like', "%$search%")
+                    ->orWhere('name', 'like',"%$search%")
+                    ->orWhere('ip', 'like', "%$search%")
                     ->orWhere('description', 'like', "%$search%");
             });
         }
@@ -55,65 +57,74 @@ class ProjectController extends Controller
         $attributes = $this->validate($request, [
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'cover' => 'nullable|string',
-            'repository' => 'nullable|string',
+            'ip' => 'required|string',
+            'port' => 'required|integer|between:1,65535',
+            'username' => 'required|string',
+            'authentication' => 'required|string',
+            'certificate' => 'required|string',
+            'core' => 'required|integer',
+            'memory' => 'required|integer',
         ]);
 
         $attributes['id'] = Str::uuid()->toString();
-
-        $project = Project::create($attributes);
-        return stored($project);
+        $server = Server::create($attributes);
+        return stored($server);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param Server $server
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(Server $server): JsonResponse
     {
-        $project = Project::findOrFail($id);
-        return success($project);
+        return success($server);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param Server $server
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, Server $server): JsonResponse
     {
-        $project = Project::findOrFail($id);
-
         $attributes = $this->validate($request, [
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'cover' => 'nullable|string',
-            'repository' => 'nullable|string',
+            'ip' => 'required|string',
+            'port' => 'required|integer|between:1,65535',
+            'username' => 'required|string',
+            'authentication' => 'required|string',
+            'certificate' => 'required|string',
+            'core' => 'required|integer',
+            'memory' => 'required|integer',
         ]);
 
-        $project->update($attributes);
-        return updated($project);
+        $server->update($attributes);
+        return updated($server);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Server $server
      * @return JsonResponse
      * @throws Exception
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Server $server): JsonResponse
     {
-        $project = Project::findOrFail($id);
-        if ($project->delete()) {
+        if ($server->environments()->count() > 0) {
+            return failed('服务器上还存在运行环境，无法删除！');
+        }
+
+        if ($server->delete()) {
             return deleted();
         }
 
-        return internalError('删除失败');
+        return internalError();
     }
 }

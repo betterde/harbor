@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -36,5 +39,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse
+     */
+    protected function unauthenticated($request, AuthenticationException $exception): JsonResponse
+    {
+        return failed($exception->getMessage(), 401);
     }
 }

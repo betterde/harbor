@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -17,8 +18,9 @@ class ProjectsTableSeeder extends Seeder
     {
         $projects = [
             [
-                'id' => 1,
+                'id' => Str::uuid()->toString(),
                 'name' => 'Harbor',
+                'group_id' => '7a6799ef-794d-441e-9a6e-e82d61d27bbf',
                 'description' => '内部 DevOps 管理平台',
                 'cover' => null,
                 'repository' => 'https://github.com/betterde/harbor',

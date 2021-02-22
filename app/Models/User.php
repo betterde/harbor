@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Eloquent;
 use Carbon\Carbon;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Traits\HasUuid;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,9 +27,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class User extends Authenticatable implements MustVerifyEmail, JWTSubject
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail;
+    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail, HasUuid, HasApiTokens;
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
+    protected $guarded = ['id'];
 
     /**
      * The attributes that are mass assignable.
@@ -59,28 +74,4 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * Date: 2020/12/23
-     * @return int
-     * @author George
-     */
-    public function getJWTIdentifier(): int
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * Date: 2020/12/23
-     * @return array
-     * @author George
-     */
-    public function getJWTCustomClaims(): array
-    {
-        return [];
-    }
 }

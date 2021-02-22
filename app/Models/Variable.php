@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,12 +21,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Variable extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
 
     const TYPE_INT = 'integer';
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
     const TYPE_BOOLEAN = 'boolean';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.

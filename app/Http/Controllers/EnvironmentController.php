@@ -30,7 +30,7 @@ class EnvironmentController extends Controller
             'project_id' => 'required|integer'
         ]);
 
-        $limit = $request->get('limit');
+        $limit = $request->get('limit', config('app.query.limit'));
 
         $search = $request->get('search');
 

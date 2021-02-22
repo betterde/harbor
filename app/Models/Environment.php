@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Eloquent;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,13 +16,28 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @package App\Models
  * @property int $id
  * @property string $name
- * @property string $project_id
+ * @property string $project_id 所在项目 ID
+ * @property string $server_id 所在服务器 ID
  * @property string $description
  * @mixin Eloquent
  */
 class Environment extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var string[]|bool
+     */
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.

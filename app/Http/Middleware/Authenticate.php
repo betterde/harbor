@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -12,11 +12,13 @@ class Authenticate extends Middleware
      * Handle an unauthenticated user.
      *
      * @param Request $request
-     * @param  array  $guards
-     * @return JsonResponse
+     * @param array $guards
+     * @throws AuthenticationException
      */
-    protected function unauthenticated($request, array $guards): JsonResponse
+    protected function unauthenticated($request, array $guards)
     {
-        return failed('Unauthorized', 401);
+        throw new AuthenticationException(
+            'Unauthenticated.', $guards, $this->redirectTo($request)
+        );
     }
 }

@@ -123,6 +123,10 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'query' => [
+        'limit' => env('DEFAULT_QUERY_LIMIT', 10)
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

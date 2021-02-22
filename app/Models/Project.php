@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Traits\HasUuid;
 use Eloquent;
 use Carbon\Carbon;
+use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,6 +28,11 @@ class Project extends Model
 {
     use HasFactory, HasUuid;
 
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
     public $incrementing = false;
 
     /**

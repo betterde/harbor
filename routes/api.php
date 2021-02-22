@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ServerController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\EnvironmentController;
@@ -20,8 +21,9 @@ Route::prefix('auth')->group(function () {
 //    Route::post('signin', []);
 });
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('project', ProjectController::class);
+    Route::apiResource('server', ServerController::class);
     Route::apiResource('environment', EnvironmentController::class);
     Route::apiResource('variable', VariableController::class);
 });
