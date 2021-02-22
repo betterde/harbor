@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -10,8 +11,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Auth\EloquentUserProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * 用户认证逻辑控制器
@@ -102,12 +105,21 @@ class AuthenticationController extends Controller
      * 注销登陆
      *
      * Date: 2018/10/14
-     * @author George
      * @return JsonResponse
+     * @throws Exception
+     * @author George
      */
-    public function signout()
+    public function signout(): JsonResponse
     {
-        $this->guard()->logout();
+        /**
+         * @var User $user
+         */
+        $user = Auth::user();
+        /**
+         * @var PersonalAccessToken $token
+         */
+        $token = $user->currentAccessToken();
+        $token->delete();
         return message('注销成功');
     }
 

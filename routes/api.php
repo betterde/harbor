@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\AuthenticationController;
 
 Route::prefix('auth')->group(function () {
     Route::post('signin', [AuthenticationController::class, 'signin']);
+    Route::middleware('auth:sanctum')->post('signout', [AuthenticationController::class, 'signout']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
