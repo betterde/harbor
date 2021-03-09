@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Eloquent;
+use Exception;
 use Carbon\Carbon;
 use App\Traits\HasUuid;
-use Exception;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
-use function PHPUnit\Framework\isNull;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * 用户组数据模型
@@ -64,7 +63,7 @@ class Group extends Model
      * @throws Exception
      * @author George
      */
-    public function isOwner(User|string $user): bool
+    public function isOwner($user): bool
     {
         $id = null;
 

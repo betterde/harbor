@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\EnvironmentController;
 use App\Http\Controllers\Auth\AuthenticationController;
@@ -25,9 +27,11 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('profile', [AccountController::class, 'profile']);
     Route::apiResource('group', GroupController::class);
     Route::apiResource('project', ProjectController::class);
     Route::apiResource('server', ServerController::class);
     Route::apiResource('environment', EnvironmentController::class);
     Route::apiResource('variable', VariableController::class);
+    Route::apiResource('journal', JournalController::class);
 });
