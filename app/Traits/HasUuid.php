@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 trait HasUuid
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * 定义模型事件
      *
      * Date: 2021/2/22

@@ -33,13 +33,6 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail, HasUuid, HasApiTokens;
 
     /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var string[]|bool

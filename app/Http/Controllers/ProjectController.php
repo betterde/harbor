@@ -66,12 +66,11 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param Project $project
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(Project $project): JsonResponse
     {
-        $project = Project::findOrFail($id);
         return success($project);
     }
 
@@ -79,14 +78,12 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param Project $project
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, Project $project): JsonResponse
     {
-        $project = Project::findOrFail($id);
-
         $attributes = $this->validate($request, [
             'name' => 'required|string',
             'description' => 'nullable|string',
@@ -101,13 +98,12 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Project $project
      * @return JsonResponse
      * @throws Exception
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Project $project): JsonResponse
     {
-        $project = Project::findOrFail($id);
         if ($project->delete()) {
             return deleted();
         }
